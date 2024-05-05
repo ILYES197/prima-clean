@@ -1,0 +1,41 @@
+json-server --watch src/data/db.json --port 3000
+
+
+from django.db import models
+from django.contrib.postgres.fields import ArrayField
+
+class Product(models.Model):
+    id = models.CharField(max_length=20, primary_key=True)
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    isInStock = models.BooleanField(default=True)
+    gender = models.CharField(max_length=10)
+    category = models.CharField(max_length=50)
+    availableSizes = ArrayField(models.IntegerField())
+    rating = models.FloatField()
+    totalReviewCount = models.IntegerField()
+    productionDate = models.DateTimeField()
+    brandName = models.CharField(max_length=100)
+    productCode = models.IntegerField()
+    imageUrl = models.URLField()
+    additionalImageUrls = ArrayField(models.URLField())
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    username = models.CharField(max_length=100)
+    userImage = models.ImageField(upload_to='user_profile_photos')
+    location = models.CharField(max_length=100)
+    rating = models.IntegerField()
+    date = models.DateField()
+    reviewTitle = models.CharField(max_length=200)
+    reviewText = models.TextField()
+
+class User(models.Model):
+    id = models.CharField(max_length=20, primary_key=True)
+    name = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=200)
+    password = models.CharField(max_length=128)
+    userWishlist = ArrayField(models.CharField(max_length=20))
