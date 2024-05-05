@@ -1,0 +1,183 @@
+var windowsize;
+(function($) {
+	$(document).ready(function() {
+		/*$('#header-menu').scrollToFixed({
+			minWidth :768,
+			preFixed: function() { $(this).parent().css('position', 'absolute'); },
+			postFixed: function() { $(this).parent().css('position', ''); },
+			unfixed: function() { $(this).css('position', 'absolute');
+									$(this).css('z-index', '1000');}
+		});
+		var h = $( window ).height();
+		var w = $( window ).width(); */
+		
+		var pos = $(window).scrollTop();
+		if ( pos > 120 ) {
+			$("#header-menu").addClass("scrolling");
+		} else {
+			$("#header-menu").removeClass("scrolling");
+		}
+		if (pos > 100) {
+            $('.scrollup').fadeIn();
+        } else {
+            $('.scrollup').fadeOut();
+        }
+		
+		$(window).scroll(function(){
+			var scroll = $(window).scrollTop();
+			if (scroll > pos)
+			{				
+				if ( scroll > 120 ) {
+					$("#header-menu").addClass("down");
+				}
+			}
+			else
+			{
+				$("#header-menu").addClass("scrolling");
+				$("#header-menu").removeClass("down");
+				if ( scroll == 0 ) {
+					$("#header-menu").removeClass("scrolling");
+				}	
+			}					
+			
+			pos = $(window).scrollTop();
+
+            if (pos > 100) {
+                $('.scrollup').fadeIn();
+            } else {
+                $('.scrollup').fadeOut();
+            }
+        });
+ 
+        $('.scrollup').click(function(){
+            $("html, body").animate({ scrollTop: 0 }, 500);
+            return false;
+        });
+		$('#block-block-6 .widget-btn').click(function(){
+			if($( window ).width() < 993) {
+				if($(this).hasClass( "disable" )) {
+					$(this).removeClass("disable");
+					$(this).parent().children('.widget-box').fadeIn();
+					$(this).children('.fa').removeClass("fa-chevron-down");
+					$(this).children('.fa').addClass("fa-chevron-up");
+				}
+				else {
+					$(this).addClass("disable");
+					$(this).parent().children('.widget-box').fadeOut();
+					$(this).children('.fa').removeClass("fa-chevron-up");
+					$(this).children('.fa').addClass("fa-chevron-down");
+				}
+			}
+        });
+		//windowsize.imgResize();
+	});
+}(jQuery)); 
+(function($, window) {
+	$(window).load(function(){
+		//windowsize.imgResize();
+		/*$( ".masonry-article .view-header .filters button" ).each(function() {
+			$(this).removeClass("is-checked");
+		});		
+		$( ".masonry-article .views-exposed-form select.form-select" ).each(function() {
+			$type_selected = $(this).val();alert($(this).val());
+			$(this).parents('.masonry-article').find('.filters button').each(function() {
+				if ($(this).data('value') == $type_selected)
+				{
+					$(this).addClass("is-checked");
+				}	
+			});
+		});*/	
+	});
+	
+	$(window).resize(function(){
+		/*windowsize.imgResize();
+		$(document).ajaxComplete(function() {
+			windowsize.imgResize();
+		});*/
+		if($( window ).width() > 992) {
+			if($('#block-block-6 .widget-btn').hasClass( "disable" )) {
+				$('#block-block-6 .widget-box').fadeIn();
+			}
+		}
+	});
+}(jQuery, window));
+(function($) {
+ windowsize = {
+	//CONFIG
+	use: true, //turn the window size function on or off
+	freq: 100, //timeout between running of the function
+	//DATA
+	w: 0, //stores window width
+	h: 0, //stores window height
+	timeout: null, //stores our function on a timeout
+	imgResize : function(){
+		var height = $( window ).height() - 47;
+		var width = $( window ).width(); 
+		$('.view-slides-show .views-field-field-image img').css('width', width + 'px');
+		$('.view-slides-show .views-field-field-image img').css('max-width', '100%');
+		$('.view-slides-show .views-field-field-image img').css('height', 'auto');
+		$('#showcase').css('height', height + 'px');
+		$('.view-slides-show .views-field-body').css('top', height/2 + 'px');
+		$('.view-slides-show .control').css('top', height/2 + 'px');
+		//console.log('w: ' + width + ' h: ' + height + '  img: ' + $('.view-slides-show .views-field-field-image img').height());
+		if(height <= width && $('.view-slides-show .views-field-field-image img').height() < height){
+			$('.view-slides-show .views-field-field-image img').css('height', height + 'px');
+			$('.view-slides-show .views-field-field-image img').css('max-width', 'none');
+			$('.view-slides-show .views-field-field-image img').css('width', 'auto');
+			if($('.view-slides-show .views-field-field-image img').width() < width){
+				$('.view-slides-show .views-field-field-image img').css('width', width + 'px');
+				$('.view-slides-show .views-field-field-image img').css('max-width', '100%');
+				$('.view-slides-show .views-field-field-image img').css('height', 'auto');
+			}
+		}
+	},
+	//RUN
+	run: function(force){
+		if(windowsize.use == true){
+			if(force == true){
+				windowsize.func(force);
+			}else{
+				clearTimeout(windowsize.timeout);
+				windowsize.timeout = setTimeout(function(){
+					windowsize.func(force);
+				}, windowsize.freq);
+			};
+		};
+	},
+	func: function(force){
+		var newWidth = $(window).width();
+		var newHeight = $(window).height();
+		if(force == true){
+			windowsize.w = newWidth;
+			windowsize.h = newHeight;
+			windowsize.w_func();
+			windowsize.h_func();
+		}else{
+			if(newWidth!=windowsize.w){
+				windowsize.w_func(force);
+			};
+			if(newHeight!=windowsize.h){
+				windowsize.h_func(force);
+			};
+			if(newWidth!=windowsize.w || newHeight!=windowsize.h){
+				windowsize.x_func(force);
+			};
+			windowsize.w = newWidth;
+			windowsize.h = newHeight;
+		};
+	},
+	//FUNCTIONS
+	w_func: function(force){
+		//code here will run if the width changes
+		if(force == false){
+			
+		}
+	},
+	h_func: function(force){
+		//code here will run if the height changes
+	},
+	x_func: function(force){
+		//code here will run if the either the width or height changes
+	}
+};
+}(jQuery));

@@ -1,0 +1,106 @@
+var windowsize;
+(function($) {
+	var applyMagnificPopup = function() {
+		$('.view-produits .view-content').magnificPopup({
+			delegate: '.views-field-field-gallery-photo-1 a.zoom',
+			type: 'image',
+			mainClass: 'mfp-with-zoom', // this class is for CSS animation below
+			image: {
+				tError: '<a href="cirtabrosse/%url%">The image #%curr%</a> could not be loaded.',
+				tCounter: '%curr% / %total%'
+			},
+			zoom: {
+				enabled: true,
+				duration: 300,
+				easing: 'ease-in-out',
+				opener: function(openerElement) {
+					return openerElement.is('img') ? openerElement : openerElement.parents('.views-row').find('img');
+				}
+			}          
+		});
+		$('.field-name-field-gallery-photo .field-items').magnificPopup({
+			delegate: '.field-item a',
+			type: 'image',
+			gallery: {
+				enabled: true
+			},
+			mainClass: 'mfp-with-zoom',
+		});
+	}
+	$(document).ready(function() {
+		applyMagnificPopup();
+		
+		$(document).ajaxComplete(function(){
+			applyMagnificPopup();
+		});
+		//windowsize.run(true);
+	});
+}(jQuery)); 
+(function($, window) {
+	$(window).load(function(){
+		//windowsize.run(true);
+	});
+	
+	$(window).resize(function(){
+		//windowsize.run(false);
+	});
+}(jQuery, window));
+(function($) {
+ windowsize = {
+	//CONFIG
+	use: true, //turn the window size function on or off
+	freq: 100, //timeout between running of the function
+	//DATA
+	w: 0, //stores window width
+	h: 0, //stores window height
+	timeout: null, //stores our function on a timeout
+	//RUN
+	run: function(force){
+		if(windowsize.use == true){
+			if(force == true){
+				windowsize.func(force);
+			}else{
+				clearTimeout(windowsize.timeout);
+				windowsize.timeout = setTimeout(function(){
+					windowsize.func(force);
+				}, windowsize.freq);
+			};
+		};
+	},
+	func: function(force){
+		var newWidth = $(window).width();
+		var newHeight = $(window).height();
+		if(force == true){
+			windowsize.w = newWidth;
+			windowsize.h = newHeight;
+			windowsize.w_func();
+			windowsize.h_func();
+		}else{
+			if(newWidth!=windowsize.w){
+				windowsize.w_func(force);
+			};
+			if(newHeight!=windowsize.h){
+				windowsize.h_func(force);
+			};
+			if(newWidth!=windowsize.w || newHeight!=windowsize.h){
+				windowsize.x_func(force);
+			};
+			windowsize.w = newWidth;
+			windowsize.h = newHeight;
+		};
+	},
+	//FUNCTIONS
+	w_func: function(force){
+		//code here will run if the width changes
+		if(force == false){
+			
+		}
+	},
+	h_func: function(force){
+		//code here will run if the height changes
+	},
+	x_func: function(force){
+		//code here will run if the either the width or height changes
+	}
+};
+}(jQuery));
